@@ -1,4 +1,5 @@
 ﻿
+using KbstAPI.Core.DTO;
 using KbstAPI.Data.Models;
 using KbstAPI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,7 @@ namespace KbstAPI.Controllers
         /// </remarks>
         [HttpPost]
         [Route("/assets/types")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult> CreateAssetType([FromBody] AssetType assetType)
         {
             var res = await _assetTypeService.Create(assetType);
@@ -55,6 +57,7 @@ namespace KbstAPI.Controllers
         /// <returns>List of asset types</returns>
         [HttpGet]
         [Route("/assets/types")]
+        [ProducesResponseType(typeof(AssetType), StatusCodes.Status200OK)]
         public async Task<ActionResult> Get()
         {
             var res = await _assetTypeService.GetAssetTypes();

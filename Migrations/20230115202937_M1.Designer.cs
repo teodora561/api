@@ -3,6 +3,7 @@ using System;
 using KbstAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KbstAPI.Migrations
 {
     [DbContext(typeof(KbstContext))]
-    partial class KbstContextModelSnapshot : ModelSnapshot
+    [Migration("20230115202937_M1")]
+    partial class M1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -138,17 +141,6 @@ namespace KbstAPI.Migrations
                     b.ToTable("LabelOptions");
                 });
 
-            modelBuilder.Entity("KbstAPI.Data.Models.LayoutConfig", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("LayoutConfigs");
-                });
-
             modelBuilder.Entity("KbstAPI.Data.Models.LayoutSection", b =>
                 {
                     b.Property<int>("ID")
@@ -159,9 +151,6 @@ namespace KbstAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("LayoutConfigId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -170,8 +159,6 @@ namespace KbstAPI.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("LayoutConfigId");
 
                     b.ToTable("LayoutSections");
                 });
@@ -229,12 +216,7 @@ namespace KbstAPI.Migrations
                     b.Property<string>("SubType")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("TemplateId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Type");
-
-                    b.HasIndex("TemplateId");
 
                     b.ToTable("Schemas");
                 });
@@ -309,24 +291,6 @@ namespace KbstAPI.Migrations
                     b.Navigation("Options");
                 });
 
-            modelBuilder.Entity("KbstAPI.Data.Models.LayoutSection", b =>
-                {
-                    b.HasOne("KbstAPI.Data.Models.LayoutConfig", null)
-                        .WithMany("Sections")
-                        .HasForeignKey("LayoutConfigId");
-                });
-
-            modelBuilder.Entity("KbstAPI.Data.Models.Schema", b =>
-                {
-                    b.HasOne("KbstAPI.Data.Models.LayoutConfig", "Template")
-                        .WithMany()
-                        .HasForeignKey("TemplateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Template");
-                });
-
             modelBuilder.Entity("KbstAPI.Data.Models.Group", b =>
                 {
                     b.HasOne("KbstAPI.Data.Models.Label", "Label")
@@ -352,11 +316,6 @@ namespace KbstAPI.Migrations
             modelBuilder.Entity("KbstAPI.Data.Models.AssetType", b =>
                 {
                     b.Navigation("SubTypes");
-                });
-
-            modelBuilder.Entity("KbstAPI.Data.Models.LayoutConfig", b =>
-                {
-                    b.Navigation("Sections");
                 });
 
             modelBuilder.Entity("KbstAPI.Data.Models.LayoutSection", b =>

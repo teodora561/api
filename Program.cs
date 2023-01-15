@@ -7,7 +7,9 @@ using KbstAPI.Documentation;
 using KbstAPI.Services;
 using KbstAPI.Services.ConcreteServices;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Converters;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,13 +26,18 @@ builder.Services.AddScoped<IAssetTypeRepository, AssetTypeRepository>();
 builder.Services.AddScoped<IAssetRepository, AssetRepository>();
 
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers().AddJsonOptions(opt =>
+    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())
+    );
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSqlite<KbstContext>(connectionString);
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    options.SupportNonNullableReferenceTypes();
     options.SchemaFilter<ExampleSchemaFilter>();
     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {

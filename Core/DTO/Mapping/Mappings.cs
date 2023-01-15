@@ -10,7 +10,7 @@ namespace KbstAPI.Core.DTO.Mapping
             CreateMap<AssetNode, Asset>().ConvertUsing(new AssetNodePropertiesConverter());
 
             CreateMap<Schema, PropertiesDTO>();
-            CreateMap<Config, PropertiesDTO>();
+            CreateMap<ListConfig, PropertiesDTO>();
             
                
         

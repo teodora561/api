@@ -1,9 +1,11 @@
 ﻿using KbstAPI.Core.Props;
+using Newtonsoft.Json;
 
 namespace KbstAPI.Data.Models
 {
-    public class Config
+    public class ListConfig
     {
+        [JsonIgnore]
         public int ID { get; set; }
 
         public string? Type { get; set; }

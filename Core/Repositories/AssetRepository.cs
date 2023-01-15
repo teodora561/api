@@ -3,6 +3,7 @@ using KbstAPI.Data;
 using KbstAPI.Data.Models;
 using KbstAPI.Repository.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace KbstAPI.Core.Repositories
 {
@@ -13,17 +14,17 @@ namespace KbstAPI.Core.Repositories
 
         }
 
-        public async Task<Config> GetAssetConfig(string type)
+        public async Task<ListConfig> GetAssetConfig(string type)
         {
             var config = context.Configs.Where(c => c.Type == type).FirstOrDefault();
             return config;
         }
 
-        public async Task<IEnumerable<Asset>> GetAssets(int? parentId, string? type)
+        public async Task<IEnumerable<Asset>> GetAssets(string? parentId, string? type)
         {
             var res = context.Assets.AsQueryable();
-            if(parentId.HasValue) {
-                res = res.Where(a => a.ParentId == parentId.Value);
+            if(!parentId.IsNullOrEmpty()) {
+                res = res.Where(a => a.ParentId == parentId);
             }
             if(type != null)
             {
@@ -35,17 +36,21 @@ namespace KbstAPI.Core.Repositories
 
         public async Task<Schema> GetAssetSchema(string type)
         {
-            var s = context.Schemas.Where(s => s.Type == type).FirstOrDefault();
+            var s = context.Schemas.Where(s => s.Type == type)
+                .Include(s => s.Template)
+                    .ThenInclude(s => s.Sections)
+                        .ThenInclude(s => s.Content)
+                .FirstOrDefault();
             return s;
         }
 
-        public List<Asset> GetChildren(int id)
+        public List<Asset> GetChildren(string id)
         {
             var directChildren = context.Assets.Where(i => i.ParentId == id);
             return new List<Asset>(directChildren.ToList());
         }
 
-        public List<Asset> GetChildrenRecursive(int id)
+        public List<Asset> GetChildrenRecursive(string id)
         {
             var directChildren = context.Assets.Where(i => i.ParentId == id);
             if (!directChildren.Any())
@@ -66,5 +71,6 @@ namespace KbstAPI.Core.Repositories
         {
             base.Update(asset);
         }
+
     }
 }

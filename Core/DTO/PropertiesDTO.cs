@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 
 namespace KbstAPI.Core.DTO
 {
+
     public class PropertiesDTO
     {
         [JsonExtensionData]

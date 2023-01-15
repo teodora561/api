@@ -41,10 +41,10 @@ namespace KbstAPI.Services.ConcreteServices
             await _assetRepository.Save();
         }
 
-        public async Task<ChangesResponse<Asset>> DeleteMany(List<int> ids)
+        public async Task<ChangesResponse<Asset>> DeleteMany(List<string> ids)
         {
 
-            foreach (int id in ids)
+            foreach (string id in ids)
             {
                 _assetRepository.Delete(id);
             }
@@ -53,12 +53,12 @@ namespace KbstAPI.Services.ConcreteServices
             return new ChangesResponse<Asset>();
         }
 
-        public async Task<GETResponse> GetAssets(int? parentId, string? type, string? include)
+        public async Task<GetAssetsResponse> GetAssets(string? parentId, string? type, string? include)
         {
 
             var assets = await _assetRepository.GetAssets(parentId, type);
 
-            var res = new GETResponse();
+            var res = new GetAssetsResponse();
             res.Entities = assets.ToList();
 
             return res;
@@ -70,18 +70,18 @@ namespace KbstAPI.Services.ConcreteServices
             var assets = await _assetRepository.GetAssets(type: "1", parentId: null);
             var mapped = _mapper.Map<List<AssetNode>>(assets.ToList());
             var nodes = new List<AssetNode>(mapped);
-            var dict = new Dictionary<int, List<int>>();
+            var dict = new Dictionary<string, List<string>>();
             foreach (var node in nodes)
             {
                 if (dict.ContainsKey(node.ParentId))
                     dict[node.ParentId].Add(node.ID);
                 else
-                    dict.Add(node.ParentId, new List<int>() { node.ID });
+                    dict.Add(node.ParentId, new List<string>() { node.ID });
             }
 
             foreach (var node in nodes)
             {
-                node.Children = (dict.ContainsKey(node.ID)) ? dict[node.ID] : new List<int>();
+                node.Children = (dict.ContainsKey(node.ID)) ? dict[node.ID] : new List<string>();
             }
             await _assetRepository.Save();
             return nodes;
@@ -126,15 +126,15 @@ namespace KbstAPI.Services.ConcreteServices
             return (Dictionary<string, Property>)properties;
         }
 
-        public Dictionary<string, PropertyConfig> GetConfig(IDictionary<string, Property> properties)
-        {
-            var dict = new Dictionary<string, PropertyConfig>();
-            foreach ((string key, Property property) in properties)
-            {
-                dict.Add(key, new PropertyConfig(property.Visible, property.Editable));
-            }
-            return dict;
-        }
+        //public Dictionary<string, PropertyConfig> GetConfig(IDictionary<string, Property> properties)
+        //{
+        //    var dict = new Dictionary<string, PropertyConfig>();
+        //    foreach ((string key, Property property) in properties)
+        //    {
+        //        dict.Add(key, new PropertyConfig(property.Visible, property.Editable));
+        //    }
+        //    return dict;
+        //}
 
         public Task<ChangesResponse<Asset>> CreateAssetNode(AssetNode assetNode)
         {
@@ -143,7 +143,7 @@ namespace KbstAPI.Services.ConcreteServices
 
         }
 
-        public async Task<GETResponse> GetAssetsResponse(int id, bool includeConfig, bool includeChildren, string? recursive)
+        public async Task<GetAssetsResponse> GetAssetsResponse(string id, bool includeConfig, bool includeChildren, string? recursive)
         {
             var asset = await _assetRepository.GetById(id);
 
@@ -163,7 +163,7 @@ namespace KbstAPI.Services.ConcreteServices
 
             entities.Add(asset);
 
-            var response = new GETResponse();
+            var response = new GetAssetsResponse();
             response.Entities = entities;
             if (asset.Type == null)
                 return response;

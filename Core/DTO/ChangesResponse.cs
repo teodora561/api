@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace KbstAPI.Core.DTO
 {
+    [NotMapped]
     public class ChangesResponse<T>
     { 
         public string[] Actions { get; set; }
-
-        [JsonInclude]
-        public List<T> Entities;
+        public List<T> Entities { get; set; }
 
         public ChangesResponse(string[] actions, List<T> entity) 
         {

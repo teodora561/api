@@ -7,6 +7,10 @@
         Task<bool> Add(T entity);
         void Update(T entity);
         void Delete(int id);
+
+        Task<T> GetById(string id);
+
+        void Delete(string id);
         Task<int> Save();
     }
 }

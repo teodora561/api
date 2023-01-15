@@ -8,6 +8,7 @@ namespace KbstAPI.Controllers
 {
     [ApiController]
     [Route("configs")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ConfigController : ControllerBase
     {
         private KbstContext _context;
@@ -44,7 +45,7 @@ namespace KbstAPI.Controllers
         ///     }
         /// </remarks>
         [HttpPost]
-        public async Task<ActionResult> CreateConfig([FromBody] Config config)
+        public async Task<ActionResult> CreateConfig([FromBody] ListConfig config)
         {
             _context.Add(config);
             await _context.SaveChangesAsync();

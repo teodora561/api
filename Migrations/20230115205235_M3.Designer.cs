@@ -3,6 +3,7 @@ using System;
 using KbstAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KbstAPI.Migrations
 {
     [DbContext(typeof(KbstContext))]
-    partial class KbstContextModelSnapshot : ModelSnapshot
+    [Migration("20230115205235_M3")]
+    partial class M3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -229,12 +232,7 @@ namespace KbstAPI.Migrations
                     b.Property<string>("SubType")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("TemplateId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Type");
-
-                    b.HasIndex("TemplateId");
 
                     b.ToTable("Schemas");
                 });
@@ -314,17 +312,6 @@ namespace KbstAPI.Migrations
                     b.HasOne("KbstAPI.Data.Models.LayoutConfig", null)
                         .WithMany("Sections")
                         .HasForeignKey("LayoutConfigId");
-                });
-
-            modelBuilder.Entity("KbstAPI.Data.Models.Schema", b =>
-                {
-                    b.HasOne("KbstAPI.Data.Models.LayoutConfig", "Template")
-                        .WithMany()
-                        .HasForeignKey("TemplateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Template");
                 });
 
             modelBuilder.Entity("KbstAPI.Data.Models.Group", b =>

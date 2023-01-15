@@ -8,6 +8,7 @@ namespace KbstAPI.Controllers
 {
     [ApiController]
     [Route("schemas")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class SchemaController : ControllerBase
     {
         private KbstContext _context;

@@ -29,6 +29,13 @@ namespace KbstAPI.Repository.Repositories
                 dbSet.Remove(entity);
         }
 
+        public virtual void Delete(string id)
+        {
+            T? entity = dbSet.Find(id);
+            if (entity != null)
+                dbSet.Remove(entity);
+        }
+
         public virtual async Task<IEnumerable<T>> GetAll()
         {
             return await this.dbSet.ToListAsync();
@@ -38,6 +45,12 @@ namespace KbstAPI.Repository.Repositories
         {
             return await this.dbSet.FindAsync(id);
         }
+
+        public virtual async Task<T> GetById(string id)
+        {
+            return await this.dbSet.FindAsync(id);
+        }
+
 
         public virtual void Update(T entity)
         {

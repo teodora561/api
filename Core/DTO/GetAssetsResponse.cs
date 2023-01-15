@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace KbstAPI.Core.DTO
 {
-    public class GETResponse
+    public class GetAssetsResponse
     {
         public List<Asset> Entities { get; set; } = new List<Asset>();
 

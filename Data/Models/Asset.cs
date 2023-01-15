@@ -9,16 +9,16 @@ namespace KbstAPI.Data.Models
 {
     public class Asset
     {
-        public int ID { get; set; }
-        public int ParentId { get; set; }
-        public string? Name { get; set; }
-        public string? Type { get; set; }
+        public string ID { get; set; } = String.Empty;
+        public string? ParentId { get; set; }
+        public string Name { get; set; } = String.Empty;
+        public string Type { get; set; } = String.Empty;
         public string? SubType { get; set; }
 
         /// <summary>
         /// Properties
         /// </summary>
-        /// <example>{"prop1":"1", "prop2"}:true</example>
+        /// <example>{"prop1":"1", "prop2":true}</example>
         [JsonExtensionData]
         public IDictionary<string, object> Properties { get; set; } = new Dictionary<string, object>();
     }

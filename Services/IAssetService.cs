@@ -8,9 +8,9 @@ namespace KbstAPI.Services
     {
         Task<Asset> GetItemById(int id);
         Task<IEnumerable<Asset>> GetAssets();
-        Task<GETResponse> GetAssets(int? parentId, string? type, string? include);
+        Task<GetAssetsResponse> GetAssets(string? parentId, string? type, string? include);
 
-        Task<GETResponse> GetAssetsResponse(int id, bool includeConfig, bool includeChildren, string? recursive);
+        Task<GetAssetsResponse> GetAssetsResponse(string id, bool includeConfig, bool includeChildren, string? recursive);
 
         Task<IEnumerable<AssetNode>> GetAssetNodes();
 
@@ -19,10 +19,10 @@ namespace KbstAPI.Services
         Task<ChangesResponse<Asset>> CreateAsset(Asset item);
         Task<ChangesResponse<Asset>> CreateAssetNode(AssetNode assetNode);
 
-        Task<ChangesResponse<Asset>> DeleteMany(List<int> ids);
+        Task<ChangesResponse<Asset>> DeleteMany(List<string> ids);
 
         void DeleteAsset(int id);
-        Task<ChangesResponse<Asset>> UpdateAsset(int id, Asset asset);
+        Task<ChangesResponse<Asset>> UpdateAsset(int istringd, Asset asset);
         Task<ChangesResponse<AssetNode>> UpdateAssetNode(AssetNode assetNode);
     }
 }

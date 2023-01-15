@@ -26,17 +26,6 @@ namespace KbstAPI.Controllers
 
         }
 
-        /// <summary>  
-        /// Get all assets.
-        /// </summary>
-        /// <returns>List of assets</returns>
-        //[HttpGet]
-        //public async Task<IActionResult> GetAll()
-        //{
-        //    var result = await _assetService.GetAssets();
-        //    return Ok(result);
-        //}
-
         /// <summary>
         /// Create asset.
         /// </summary>
@@ -47,7 +36,7 @@ namespace KbstAPI.Controllers
         /// 
         ///     Post /Asset
         ///     {
-        ///         "parentId": -1,
+        ///         "parentId": "1",
         ///         "name": "asset1",
         ///         "type": "type1",
         ///         "subType": "subType1",
@@ -73,10 +62,10 @@ namespace KbstAPI.Controllers
         /// <remarks>
         /// Sample request: 
         /// 
-        ///     Post /Asset
+        ///     PUT /Asset
         ///     {
-        ///         "id": 1,
-        ///         "parentId": -1,
+        ///         "id": 2,
+        ///         "parentId": "1",
         ///         "name": "asset1",
         ///         "type": "type1",
         ///         "subType": "subType1",
@@ -95,18 +84,52 @@ namespace KbstAPI.Controllers
         }
 
         /// <summary>
+        /// Property change.
+        /// </summary>
+        /// <param name="id">Asset Id</param>
+        /// <param name="changeRequest">Change Request</param>
+        /// <remarks>
+        /// Sample request: 
+        /// 
+        ///     PUT /Asset
+        ///     {
+        ///         "eventSource": "eventSource1"
+        ///         "entity": {
+        ///             "id": "2",
+        ///             "parentId": "1",
+        ///             "name": "asset1",
+        ///             "type": "type1",
+        ///             "subType": "subType1",
+        ///             "icon": "icon1",
+        ///             "description": "Asset description"
+        ///         }
+        ///     }
+        /// 
+        /// </remarks>
+        /// <returns>Asset with updated schema.</returns>
+        [HttpPut]
+        [Route("{id}/change")]
+        [ProducesResponseType(typeof(GetAssetResponse), StatusCodes.Status200OK)]
+        public async Task<ActionResult> Change(int id, [FromBody]ChangeRequest changeRequest)
+        {
+            return Ok(new GetAssetResponse());
+
+        }
+       
+
+        /// <summary>
         /// Get asset and its children with schema.
         /// </summary>
         /// <param name="parentId">Parent ID</param>
         /// <param name="include" example="config"> 
         /// Include resources related to the asset
-        /// \nconfig - List configuration
+        /// config - List configuration
         /// </param>
         /// <param name="recursive" example="true">true - include asset and its subtree</param> 
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(GETResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult> Get([FromQuery]int parentId, string? include, string? recursive)
+        [ProducesResponseType(typeof(GetAssetsResponse), StatusCodes.Status200OK)]    
+        public async Task<ActionResult> Get([FromQuery]string parentId, string? include, string? recursive)
         {
             if (!this.HttpContext.Request.QueryString.HasValue)
             {
@@ -128,8 +151,8 @@ namespace KbstAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("/assets/{id}")]
-        [ProducesResponseType(typeof(GETResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult> Getbyid (int id)
+        [ProducesResponseType(typeof(GetAssetResponse), StatusCodes.Status200OK)]
+        public async Task<ActionResult> GetById (string id)
         {
             var result = await _assetService.GetAssetsResponse(id, includeConfig:false, includeChildren: false, recursive: "");
             return Ok(result);
@@ -144,7 +167,7 @@ namespace KbstAPI.Controllers
         [ProducesResponseType(typeof(ChangesResponse<Asset>), StatusCodes.Status200OK)]
         public async Task<ActionResult> Delete([FromQuery] string Ids)
         {
-            var assetIds = Ids.Split(',')?.Select(Int32.Parse)?.ToList();
+            var assetIds = Ids.Split(',').ToList();
             if (assetIds == null)
                 return BadRequest();
             var result = await _assetService.DeleteMany(assetIds);
@@ -159,7 +182,7 @@ namespace KbstAPI.Controllers
         /// <returns>List of asset nodes</returns>
         [HttpGet]
         [Route("nodes")]
-        [ProducesResponseType(typeof(GETResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<AssetNode>), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetAssetNodes()
         {
             var result = await _assetService.GetAssetNodes();
@@ -176,7 +199,7 @@ namespace KbstAPI.Controllers
         [Route("nodes")]
         public async Task<ActionResult> DeleteNodes(string Ids)
         {
-            var assetIds = Ids.Split(',')?.Select(Int32.Parse)?.ToList();
+            var assetIds = Ids.Split(',').ToList();
             if (assetIds == null)
                 return BadRequest();
             var result = await _assetService.DeleteMany(assetIds);
@@ -193,7 +216,7 @@ namespace KbstAPI.Controllers
         /// 
         ///     POST /AssetNode
         ///     {   
-        ///         "parentId": 2,       
+        ///         "parentId": "2",       
         ///         "name": "string",
         ///         "type": "1",
         ///         "subType": "string",
@@ -222,10 +245,10 @@ namespace KbstAPI.Controllers
         /// 
         /// Sample request:
         /// 
-        ///     POST /AssetNode
+        ///     PUT /AssetNode
         ///     {   
-        ///         "id": 1,
-        ///         "parentId": 2,       
+        ///         "id": "2",
+        ///         "parentId": "2",       
         ///         "name": "string",
         ///         "type": "1",
         ///         "subType": "string",

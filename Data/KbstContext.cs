@@ -12,11 +12,23 @@ namespace KbstAPI.Data
         public DbSet<Asset> Assets { get; set; } = null!;
         public DbSet<Schema> Schemas { get; set; } = null!;
 
-        public DbSet<Config> Configs { get; set; } = null!;
+        public DbSet<ListConfig> Configs { get; set; } = null!;
 
         public DbSet<AssetType> AssetTypes { get; set; } = null!;
 
         public DbSet<Report> Reports { get; set; } = null!;
+
+        public DbSet<Label> Labels { get; set; } = null!;
+        public DbSet<LabelOptions> LabelOptions { get; set; } = null!;
+
+        public DbSet<BaseContent> BaseContents { get; set; } = null!;
+        public DbSet<Group> Groups { get; set; } = null!;
+
+        public DbSet<PropertyRef> PropertyRefs { get; set; } = null!;
+
+        public DbSet<LayoutSection> LayoutSections { get; set; } = null!;
+
+        public DbSet<LayoutConfig> LayoutConfigs { get; set; } = null!;
         public KbstContext(DbContextOptions<KbstContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,23 +38,36 @@ namespace KbstAPI.Data
                     v => JsonConvert.SerializeObject(v),
                     v => JsonConvert.DeserializeObject<Dictionary<string, object>>(v));
 
-            //modelBuilder.Entity<AssetType>()
-            //    .HasMany(a => a.SubTypes)
-            //    .WithOne()
-            //    .HasForeignKey(a => a.ParentId);
+            modelBuilder.Entity<AssetType>()
+                .HasMany(a => a.SubTypes)
+                .WithOne()
+                .HasForeignKey(a => a.ParentId);
 
-            modelBuilder.Entity<AssetType>().HasOne(e => e.Parent).WithMany(e => e.SubTypes).HasForeignKey(b => b.ParentId);
+            modelBuilder.Entity<AssetType>()
+                .HasOne(e => e.Parent)
+                .WithMany(e => e.SubTypes)
+                .HasForeignKey(b => b.ParentId);
 
+            modelBuilder.Entity<Group>()
+                .HasMany(g => g.Content)
+                .WithOne()
+                .HasForeignKey(c => c.ParentId);
+
+
+            modelBuilder.Entity<LayoutSection>().Property(s => s.ColumnRatio).HasConversion(
+
+                v => JsonConvert.SerializeObject(v),
+                v => JsonConvert.DeserializeObject<ICollection<int>>(v));
 
             modelBuilder.Entity<Schema>().HasKey(s => s.Type);
             modelBuilder.Entity<Schema>().Property(s => s.Properties).HasConversion(
                     v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<Dictionary<string, PropertyDB>>(v));
+                    v => JsonConvert.DeserializeObject<Dictionary<string, Property>>(v));
 
-            modelBuilder.Entity<Config>().Property(s => s.Properties).HasConversion(
+            modelBuilder.Entity<ListConfig>().Property(s => s.Properties).HasConversion(
                     v => JsonConvert.SerializeObject(v),
                     v => JsonConvert.DeserializeObject<Dictionary<string, PropertyConfig>>(v));
-
+                
             base.OnModelCreating(modelBuilder);
         }
 

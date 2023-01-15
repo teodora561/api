@@ -15,6 +15,7 @@ namespace KbstAPI.Data.Models
         [ForeignKey("ParentId")]
         public int? ParentId { get; set; }
 
+        [JsonIgnore]
         public virtual AssetType? Parent { get; set; }   
 
         public ICollection<AssetType>? SubTypes { get; set; }  

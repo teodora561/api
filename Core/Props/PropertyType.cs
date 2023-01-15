@@ -2,10 +2,13 @@
 {
     public enum PropertyType
     {
-        String,
-        Boolean,
-        DateTime,
+        Text,
         Number,
-        ItemRef
+        Boolean,
+        Date,
+        Select,
+        Ref,
+        Code,
+        Function
     }
 }

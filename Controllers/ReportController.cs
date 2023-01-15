@@ -1,4 +1,5 @@
-﻿using KbstAPI.Data.Models;
+﻿using KbstAPI.Core.DTO;
+using KbstAPI.Data.Models;
 using KbstAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ namespace KbstAPI.Controllers
         /// </summary>
         /// <returns>List of reports.</returns>
         [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult> Get()
         {
             var result = await _reportService.GetReports();
@@ -46,10 +48,11 @@ namespace KbstAPI.Controllers
         /// Open connection
         /// </summary>
         /// <param name="assetId">Asset ID</param>
-        /// <returns>Created report</returns>
+        /// <returns>Connection ID</returns>
+        /// <response code="200">Returns connection ID</response>
         [HttpPost]
-        [Route("{assetId}")]
-        public async Task<ActionResult> Create(int assetId)
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        public async Task<ActionResult> Create([FromBody] int assetId)
         {
             var result = await _reportService.Create(assetId);
             return Ok(result);
@@ -71,15 +74,15 @@ namespace KbstAPI.Controllers
         ///     
         /// </remarks>
         /// <response code="200">Returns the newly created report</response>
-        [HttpPost]
-        public async Task<ActionResult> Create([FromBody]Report report)
-        {
-            var result = await _reportService.Create(report);
-            return Ok(result);
-        }
+        //[HttpPost]
+        //public async Task<ActionResult> Create([FromBody]Report report)
+        //{
+        //    var result = await _reportService.Create(report);
+        //    return Ok(result);
+        //}
 
         /// <summary>
-        /// Delete specific report.
+        /// Close connection.
         /// </summary>
         /// <param name="id">Connection ID</param>
         /// <returns></returns>
