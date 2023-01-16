@@ -126,16 +126,6 @@ namespace KbstAPI.Services.ConcreteServices
             return (Dictionary<string, Property>)properties;
         }
 
-        //public Dictionary<string, PropertyConfig> GetConfig(IDictionary<string, Property> properties)
-        //{
-        //    var dict = new Dictionary<string, PropertyConfig>();
-        //    foreach ((string key, Property property) in properties)
-        //    {
-        //        dict.Add(key, new PropertyConfig(property.Visible, property.Editable));
-        //    }
-        //    return dict;
-        //}
-
         public Task<ChangesResponse<Asset>> CreateAssetNode(AssetNode assetNode)
         {
             var asset = _mapper.Map<Asset>(assetNode);

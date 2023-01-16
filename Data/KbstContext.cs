@@ -4,6 +4,7 @@ using KbstAPI.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.Text.Json;
 
 namespace KbstAPI.Data
 {
@@ -34,9 +35,10 @@ namespace KbstAPI.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Report>().HasKey(r => r.ConnectionId);
+            var options = new JsonSerializerOptions { WriteIndented = true };
             modelBuilder.Entity<Asset>().Property(e => e.Properties).HasConversion(
-                    v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<Dictionary<string, object>>(v));
+                    v => System.Text.Json.JsonSerializer.Serialize(v, options),
+                    v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v, options));
 
             modelBuilder.Entity<AssetType>()
                 .HasMany(a => a.SubTypes)

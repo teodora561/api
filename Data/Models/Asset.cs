@@ -1,9 +1,9 @@
 ﻿using KbstAPI.Core.Props;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Dynamic;
+using System.Text.Json.Serialization;
 
 namespace KbstAPI.Data.Models
 {
