@@ -20,6 +20,7 @@ namespace KbstAPI.Data.Models
         
         public LabelOptions? Options { get; set; }
 
+        [JsonIgnore]
         public int LabelOptionsId { get; set; }
 
         //public virtual Group Group { get; set; }
@@ -30,7 +31,7 @@ namespace KbstAPI.Data.Models
     /// </summary>
     public class LabelOptions
     {
-        //[JsonIgnore]
+        [JsonIgnore]
         public int ID { get; set; }
 
         /// <summary>

@@ -7,6 +7,7 @@ namespace KbstAPI.Data.Models
 {
     public class BaseContent
     {
+        [JsonIgnore]
         public int ID {get; set;}
         [JsonConverter(typeof(StringEnumConverter))]
         public ContentType Type { get; set; }
@@ -46,6 +47,7 @@ namespace KbstAPI.Data.Models
 
         public Label? Label { get; set; }
 
+        [JsonIgnore]
         public int LabelId { get; set; }
 
     }
@@ -69,6 +71,7 @@ namespace KbstAPI.Data.Models
         /// </summary>
         public LabelOptions? LabelOptions { get; set; }
 
+        [JsonIgnore]
         public int LabelOptionsId { get; set; }
     }
 
