@@ -61,5 +61,17 @@ namespace KbstAPI.Repository.Repositories
         {
             return context.SaveChangesAsync();
         }
+
+        public async Task<T> GetById(Guid id)
+        {
+            return await this.dbSet.FindAsync(id);
+        }
+
+        public void Delete(Guid id)
+        {
+            T? entity = dbSet.Find(id);
+            if (entity != null)
+                dbSet.Remove(entity);
+        }
     }
 }

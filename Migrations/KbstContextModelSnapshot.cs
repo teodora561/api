@@ -20,6 +20,7 @@ namespace KbstAPI.Migrations
             modelBuilder.Entity("KbstAPI.Data.Models.Asset", b =>
                 {
                     b.Property<string>("ID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")

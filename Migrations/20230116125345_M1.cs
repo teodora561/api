@@ -76,18 +76,15 @@ namespace KbstAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LayoutSections",
+                name: "LayoutConfigs",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Type = table.Column<int>(type: "INTEGER", nullable: true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    ColumnRatio = table.Column<string>(type: "TEXT", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LayoutSections", x => x.ID);
+                    table.PrimaryKey("PK_LayoutConfigs", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,20 +103,6 @@ namespace KbstAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Schemas",
-                columns: table => new
-                {
-                    Type = table.Column<string>(type: "TEXT", nullable: false),
-                    SubType = table.Column<string>(type: "TEXT", nullable: true),
-                    PersistencyState = table.Column<int>(type: "INTEGER", nullable: false),
-                    Properties = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Schemas", x => x.Type);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Labels",
                 columns: table => new
                 {
@@ -135,6 +118,48 @@ namespace KbstAPI.Migrations
                         name: "FK_Labels_LabelOptions_LabelOptionsId",
                         column: x => x.LabelOptionsId,
                         principalTable: "LabelOptions",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LayoutSections",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Type = table.Column<int>(type: "INTEGER", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    ColumnRatio = table.Column<string>(type: "TEXT", nullable: false),
+                    LayoutConfigId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LayoutSections", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_LayoutSections_LayoutConfigs_LayoutConfigId",
+                        column: x => x.LayoutConfigId,
+                        principalTable: "LayoutConfigs",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Schemas",
+                columns: table => new
+                {
+                    Type = table.Column<string>(type: "TEXT", nullable: false),
+                    SubType = table.Column<string>(type: "TEXT", nullable: true),
+                    TemplateId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PersistencyState = table.Column<int>(type: "INTEGER", nullable: false),
+                    Properties = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Schemas", x => x.Type);
+                    table.ForeignKey(
+                        name: "FK_Schemas_LayoutConfigs_TemplateId",
+                        column: x => x.TemplateId,
+                        principalTable: "LayoutConfigs",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -212,6 +237,16 @@ namespace KbstAPI.Migrations
                 name: "IX_Labels_LabelOptionsId",
                 table: "Labels",
                 column: "LabelOptionsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LayoutSections_LayoutConfigId",
+                table: "LayoutSections",
+                column: "LayoutConfigId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Schemas_TemplateId",
+                table: "Schemas",
+                column: "TemplateId");
         }
 
         /// <inheritdoc />
@@ -243,6 +278,9 @@ namespace KbstAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "LabelOptions");
+
+            migrationBuilder.DropTable(
+                name: "LayoutConfigs");
         }
     }
 }

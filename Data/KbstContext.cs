@@ -34,6 +34,10 @@ namespace KbstAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Asset>()
+                .Property(a => a.ID)
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Report>().HasKey(r => r.ConnectionId);
             var options = new JsonSerializerOptions { WriteIndented = true };
             modelBuilder.Entity<Asset>().Property(e => e.Properties).HasConversion(

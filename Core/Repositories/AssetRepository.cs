@@ -20,10 +20,10 @@ namespace KbstAPI.Core.Repositories
             return config;
         }
 
-        public async Task<IEnumerable<Asset>> GetAssets(string? parentId, string? type)
+        public async Task<IEnumerable<Asset>> GetAssets(Guid? parentId, string? type)
         {
             var res = context.Assets.AsQueryable();
-            if(!parentId.IsNullOrEmpty()) {
+            if(parentId.HasValue) {
                 res = res.Where(a => a.ParentId == parentId);
             }
             if(type != null)
@@ -44,13 +44,13 @@ namespace KbstAPI.Core.Repositories
             return s;
         }
 
-        public List<Asset> GetChildren(string id)
+        public List<Asset> GetChildren(Guid id)
         {
             var directChildren = context.Assets.Where(i => i.ParentId == id);
             return new List<Asset>(directChildren.ToList());
         }
 
-        public List<Asset> GetChildrenRecursive(string id)
+        public List<Asset> GetChildrenRecursive(Guid id)
         {
             var directChildren = context.Assets.Where(i => i.ParentId == id);
             if (!directChildren.Any())

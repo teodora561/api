@@ -77,7 +77,7 @@ namespace KbstAPI.Controllers
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(typeof(ChangesResponse<Asset>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> UpdateAsset(int id, [FromBody] Asset asset)
+        public async Task<ActionResult> UpdateAsset(Guid id, [FromBody] Asset asset)
         {           
             var result = await _assetService.UpdateAsset(id, asset);
             return Ok(result);
@@ -110,7 +110,7 @@ namespace KbstAPI.Controllers
         [HttpPut]
         [Route("{id}/change")]
         [ProducesResponseType(typeof(GetAssetResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult> Change(int id, [FromBody]ChangeRequest changeRequest)
+        public async Task<ActionResult> Change(Guid id, [FromBody]ChangeRequest changeRequest)
         {
             return Ok(new GetAssetResponse());
 
@@ -129,7 +129,7 @@ namespace KbstAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(GetAssetsResponse), StatusCodes.Status200OK)]    
-        public async Task<ActionResult> Get([FromQuery]string parentId, string? include, string? recursive)
+        public async Task<ActionResult> Get([FromQuery]Guid parentId, string? include, string? recursive)
         {
             if (!this.HttpContext.Request.QueryString.HasValue)
             {
@@ -152,7 +152,7 @@ namespace KbstAPI.Controllers
         [HttpGet]
         [Route("/assets/{id}")]
         [ProducesResponseType(typeof(GetAssetResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetById (string id)
+        public async Task<ActionResult> GetById (Guid id)
         {
             var result = await _assetService.GetAssetsResponse(id, includeConfig:false, includeChildren: false, recursive: "");
             return Ok(result);
@@ -168,9 +168,14 @@ namespace KbstAPI.Controllers
         public async Task<ActionResult> Delete([FromQuery] string Ids)
         {
             var assetIds = Ids.Split(',').ToList();
+            var guids = new List<Guid>();
+            for(int i = 0; i < assetIds.Count; i++)
+            {
+                guids.Add(Guid.Parse(assetIds[i]));
+            }
             if (assetIds == null)
                 return BadRequest();
-            var result = await _assetService.DeleteMany(assetIds);
+            var result = await _assetService.DeleteMany(guids);
             return Ok(result);
         }
 
@@ -200,9 +205,14 @@ namespace KbstAPI.Controllers
         public async Task<ActionResult> DeleteNodes(string Ids)
         {
             var assetIds = Ids.Split(',').ToList();
+            var guids = new List<Guid>();
+            for (int i = 0; i < assetIds.Count; i++)
+            {
+                guids.Add(Guid.Parse(assetIds[i]));
+            }
             if (assetIds == null)
                 return BadRequest();
-            var result = await _assetService.DeleteMany(assetIds);
+            var result = await _assetService.DeleteMany(guids);
             return Ok(result);
         }
 
@@ -262,7 +272,7 @@ namespace KbstAPI.Controllers
         [HttpPut]
         [Route("nodes/{id}")]
         [ProducesResponseType(typeof(ChangesResponse<AssetNode>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> UpdateAssetNode(int id, AssetNode assetNode)
+        public async Task<ActionResult> UpdateAssetNode(Guid id, AssetNode assetNode)
         {
             var result = await _assetService.UpdateAssetNode(assetNode);
             return Ok(result);

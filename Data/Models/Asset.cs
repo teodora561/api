@@ -9,8 +9,8 @@ namespace KbstAPI.Data.Models
 {
     public class Asset
     {
-        public string ID { get; set; } = String.Empty;
-        public string? ParentId { get; set; }
+        public Guid ID { get; set; }
+        public Guid? ParentId { get; set; }
         public string Name { get; set; } = String.Empty;
         public string Type { get; set; } = String.Empty;
         public string? SubType { get; set; }

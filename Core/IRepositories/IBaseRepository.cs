@@ -12,5 +12,9 @@
 
         void Delete(string id);
         Task<int> Save();
+
+        Task<T> GetById(Guid id);
+
+        void Delete(Guid id);
     }
 }

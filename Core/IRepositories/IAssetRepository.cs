@@ -6,10 +6,10 @@ namespace KbstAPI.Core.IRepositories
     public interface IAssetRepository : IBaseRepository<Asset>
     {
         
-        Task<IEnumerable<Asset>> GetAssets(string? parentId, string? type);
+        Task<IEnumerable<Asset>> GetAssets(Guid? parentId, string? type);
 
-        List<Asset> GetChildrenRecursive(string id);
-        List<Asset> GetChildren(string id);
+        List<Asset> GetChildrenRecursive(Guid id);
+        List<Asset> GetChildren(Guid id);
 
         Task<Schema> GetAssetSchema(string type);
         Task<ListConfig> GetAssetConfig(string type);
