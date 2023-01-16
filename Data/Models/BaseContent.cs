@@ -12,9 +12,11 @@ namespace KbstAPI.Data.Models
         public ContentType Type { get; set; }
 
         [ForeignKey("ParentId")]
+        [JsonIgnore]
         public int? ParentId { get; set; }
 
         [ForeignKey("LayoutSectionId")]
+        [JsonIgnore]
         public int? LayoutSectionId { get; set; }
 
     }

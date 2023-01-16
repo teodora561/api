@@ -18,8 +18,8 @@ namespace KbstAPI.Documentation
 
                 schema.Example = new OpenApiObject()
                 {
-                    ["id"] = new OpenApiString("1"),
-                    ["parentId"] = new OpenApiString("1"),
+                    ["id"] = new OpenApiString("fb6681a4-2778-4717-9312-8f4462aa60fd"),
+                    ["parentId"] = new OpenApiString("0e952fc2-4d57-42a8-90c9-71f10afba61a"),
                     ["name"] = new OpenApiString("assetName"),
                     ["type"] = new OpenApiString("type1"),
                     ["subtype"] = new OpenApiString("subtype1"),
@@ -32,8 +32,8 @@ namespace KbstAPI.Documentation
             {
                 schema.Example = new OpenApiObject()
                 {
-                    ["id"] = new OpenApiString("2"),
-                    ["parentId"] = new OpenApiString("1"),
+                    ["id"] = new OpenApiString("fb6681a4-2778-4717-9312-8f4462aa60fd"),
+                    ["parentId"] = new OpenApiString("0e952fc2-4d57-42a8-90c9-71f10afba61a"),
                     ["name"] = new OpenApiString("assetName"),
                     ["type"] = new OpenApiString("type1"),
                     ["subtype"] = new OpenApiString("subtype1"),
@@ -52,8 +52,8 @@ namespace KbstAPI.Documentation
                         {
                             new OpenApiObject()
                             {
-                                ["id"] = new OpenApiString ("1"),
-                                ["parentId"] = new OpenApiString ("3"),
+                                ["id"] = new OpenApiString ("fb6681a4-2778-4717-9312-8f4462aa60fd"),
+                                ["parentId"] = new OpenApiString ("0e952fc2-4d57-42a8-90c9-71f10afba61a"),
                                 ["name"] = new OpenApiString("assetName1"),
                                 ["type"] = new OpenApiString("type1"),
                                 ["subtype"] = new OpenApiString("subtype1"),
@@ -63,8 +63,8 @@ namespace KbstAPI.Documentation
                             },
                             new OpenApiObject()
                             {
-                                ["id"] = new OpenApiString ("1"),
-                                ["parentId"] = new OpenApiString ("2"),
+                                ["id"] = new OpenApiString ("fb6681a4-2778-4717-9312-8f4462aa60fd"),
+                                ["parentId"] = new OpenApiString ("0e952fc2-4d57-42a8-90c9-71f10afba61a"),
                                 ["name"] = new OpenApiString("assetName2"),
                                 ["type"] = new OpenApiString("type1"),
                                 ["subtype"] = new OpenApiString("subtype1"),
@@ -85,8 +85,8 @@ namespace KbstAPI.Documentation
                         {
                             new OpenApiObject()
                             {
-                                ["id"] = new OpenApiString ("2"),
-                                ["parentId"] = new OpenApiString ("1"),
+                                ["id"] = new OpenApiString ("fb6681a4-2778-4717-9312-8f4462aa60fd"),
+                                ["parentId"] = new OpenApiString ("0e952fc2-4d57-42a8-90c9-71f10afba61a"),
                                 ["name"] = new OpenApiString("assetName1"),
                                 ["type"] = new OpenApiString("type1"),
                                 ["subtype"] = new OpenApiString("subtype1"),
@@ -95,8 +95,8 @@ namespace KbstAPI.Documentation
                             },
                             new OpenApiObject()
                             {
-                                ["id"] = new OpenApiString ("2"),
-                                ["parentId"] = new OpenApiString ("1"),
+                                ["id"] = new OpenApiString ("fb6681a4-2778-4717-9312-8f4462aa60fd"),
+                                ["parentId"] = new OpenApiString ("0e952fc2-4d57-42a8-90c9-71f10afba61a"),
                                 ["name"] = new OpenApiString("assetName2"),
                                 ["type"] = new OpenApiString("type1"),
                                 ["subtype"] = new OpenApiString("subtype1"),
@@ -123,13 +123,13 @@ namespace KbstAPI.Documentation
                 {
                     ["icon"] = new OpenApiString("icon1"),
                     ["displayName"] = new OpenApiString("Log"),
-                    ["parentId"] = new OpenApiString("1"),
+                    ["parentId"] = new OpenApiString("0e952fc2-4d57-42a8-90c9-71f10afba61a"),
                     ["subTypes"] = new OpenApiArray()
                     {
                         new OpenApiObject() {
                             ["icon"] = new OpenApiString("icon2"),
                             ["displayName"] = new OpenApiString("CLC"),
-                            ["parentId"] = new OpenApiString("2"),
+                            ["parentId"] = new OpenApiString("0e952fc2-4d57-42a8-90c9-71f10afba61a"),
                             ["subTypes"] = new OpenApiArray()
                         }
                     }

@@ -73,10 +73,13 @@ namespace KbstAPI.Services.ConcreteServices
             var dict = new Dictionary<Guid, List<Guid>>();
             foreach (var node in nodes)
             {
-                if (dict.ContainsKey((Guid)node.ParentId))
-                    dict[(Guid)node.ParentId].Add(node.ID);
-                else
-                    dict.Add((Guid)node.ParentId, new List<Guid>() { node.ID });
+                if (node.ParentId.HasValue)
+                {
+                    if (dict.ContainsKey((Guid)node.ParentId))
+                        dict[(Guid)node.ParentId].Add(node.ID);
+                    else
+                        dict.Add((Guid)node.ParentId, new List<Guid>() { node.ID });
+                }
             }
 
             foreach (var node in nodes)

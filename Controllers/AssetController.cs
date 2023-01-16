@@ -36,7 +36,7 @@ namespace KbstAPI.Controllers
         /// 
         ///     Post /Asset
         ///     {
-        ///         "parentId": "1",
+        ///         "parentId": "0e952fc2-4d57-42a8-90c9-71f10afba61a",
         ///         "name": "asset1",
         ///         "type": "type1",
         ///         "subType": "subType1",
@@ -64,8 +64,8 @@ namespace KbstAPI.Controllers
         /// 
         ///     PUT /Asset
         ///     {
-        ///         "id": 2,
-        ///         "parentId": "1",
+        ///         "id": "0e952fc2-4d57-42a8-90c9-71f10afba61a",
+        ///         "parentId": "77126cf6-06ae-457a-a3aa-cc290499b945",
         ///         "name": "asset1",
         ///         "type": "type1",
         ///         "subType": "subType1",
@@ -95,8 +95,8 @@ namespace KbstAPI.Controllers
         ///     {
         ///         "eventSource": "eventSource1"
         ///         "entity": {
-        ///             "id": "2",
-        ///             "parentId": "1",
+        ///             "id": "0e952fc2-4d57-42a8-90c9-71f10afba61a",
+        ///             "parentId": "77126cf6-06ae-457a-a3aa-cc290499b945",
         ///             "name": "asset1",
         ///             "type": "type1",
         ///             "subType": "subType1",
@@ -161,7 +161,7 @@ namespace KbstAPI.Controllers
         /// <summary>
         /// Delete specific assets.
         /// </summary>
-        /// <param name="Ids" example="1,2">Asset ids</param>
+        /// <param name="Ids" example="0e952fc2-4d57-42a8-90c9-71f10afba61a, fb6681a4-2778-4717-9312-8f4462aa60fd">Asset ids</param>
         /// <returns></returns>
         [HttpDelete]
         [ProducesResponseType(typeof(ChangesResponse<Asset>), StatusCodes.Status200OK)]
@@ -197,7 +197,7 @@ namespace KbstAPI.Controllers
         /// <summary>
         /// Delete specific ids.
         /// </summary>
-        /// <param name="Ids" example="1,2">Asset node ids</param>
+        /// <param name="Ids" example="0e952fc2-4d57-42a8-90c9-71f10afba61a, fb6681a4-2778-4717-9312-8f4462aa60fd">Asset node ids</param>
         /// <returns></returns>
         [ProducesResponseType(typeof(ChangesResponse<AssetNode>), StatusCodes.Status200OK)]
         [HttpDelete]
@@ -226,7 +226,7 @@ namespace KbstAPI.Controllers
         /// 
         ///     POST /AssetNode
         ///     {   
-        ///         "parentId": "2",       
+        ///         "parentId": "0e952fc2-4d57-42a8-90c9-71f10afba61a",       
         ///         "name": "string",
         ///         "type": "1",
         ///         "subType": "string",
@@ -257,8 +257,8 @@ namespace KbstAPI.Controllers
         /// 
         ///     PUT /AssetNode
         ///     {   
-        ///         "id": "2",
-        ///         "parentId": "2",       
+        ///         "id": "77126cf6-06ae-457a-a3aa-cc290499b945",
+        ///         "parentId": "0e952fc2-4d57-42a8-90c9-71f10afba61a, fb6681a4-2778-4717-9312-8f4462aa60fd",       
         ///         "name": "string",
         ///         "type": "1",
         ///         "subType": "string",
