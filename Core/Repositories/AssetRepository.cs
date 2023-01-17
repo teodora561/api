@@ -46,13 +46,13 @@ namespace KbstAPI.Core.Repositories
 
         public List<Asset> GetChildren(Guid id)
         {
-            var directChildren = context.Assets.Where(i => i.ParentId == id);
+            var directChildren = context.Assets.Where(i => i.ParentId == id && i.Type != "1");
             return new List<Asset>(directChildren.ToList());
         }
 
         public List<Asset> GetChildrenRecursive(Guid id)
         {
-            var directChildren = context.Assets.Where(i => i.ParentId == id);
+            var directChildren = context.Assets.Where(i => i.ParentId == id && i.Type != "1");
             if (!directChildren.Any())
                 return new List<Asset>();
             else
