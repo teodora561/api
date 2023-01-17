@@ -3,6 +3,7 @@ using KbstAPI.Core.DTO;
 using KbstAPI.Data;
 using KbstAPI.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace KbstAPI.Controllers
 {
@@ -61,20 +62,29 @@ namespace KbstAPI.Controllers
         /// </summary>
         /// <returns>List of schemas</returns>
         [HttpGet]
-        public async Task<ActionResult> GetSchema()
+        public async Task<ActionResult> Get([FromQuery] string? type, string? subtype)
         {
-            var res = _mapper.Map<List<PropertiesDTO>>(_context.Schemas.ToList());
-            await _context.SaveChangesAsync();
-            return Ok(res);
+            //var res = _mapper.Map<List<PropertiesDTO>>(_context.Schemas.ToList());
+            //await _context.SaveChangesAsync();
+            //return Ok(res);
+
+            if(!this.HttpContext.Request.QueryString.HasValue)
+            {
+                var schemas = _context.Schemas.ToList();
+                await _context.SaveChangesAsync();
+                return Ok(schemas);
+            }
+            else if(!subtype.IsNullOrEmpty())
+            {
+                var schemas = _context.Schemas.Where(s => s.SubType == subtype);
+                if(schemas.Any())
+                    return Ok(schemas.First());
+            }   
+
+            var s = _context.Schemas.Where(s => s.Type == type).FirstOrDefault();
+            return Ok(s);
+             
         }
 
-        [HttpPost]
-        [Route("/property")]
-        public async Task<ActionResult> CreateProperty([FromBody] Property property)
-        {
-            _context.Add(property);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
     }
 }
