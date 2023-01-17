@@ -32,6 +32,10 @@ namespace KbstAPI.Data
         public DbSet<LayoutConfig> LayoutConfigs { get; set; } = null!;
         public KbstContext(DbContextOptions<KbstContext> options) : base(options) { }
 
+
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Asset>()
@@ -40,7 +44,12 @@ namespace KbstAPI.Data
 
             modelBuilder.Entity<Report>().HasKey(r => r.ConnectionId);
             var options = new JsonSerializerOptions { WriteIndented = true };
+
             modelBuilder.Entity<Asset>().Property(e => e.Properties).HasConversion(
+                    v => System.Text.Json.JsonSerializer.Serialize(v, options),
+                    v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v, options));
+
+            modelBuilder.Entity<Property>().Property(e => e.AdditionalValues).HasConversion(
                     v => System.Text.Json.JsonSerializer.Serialize(v, options),
                     v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v, options));
 
@@ -65,15 +74,15 @@ namespace KbstAPI.Data
                 v => JsonConvert.SerializeObject(v),
                 v => JsonConvert.DeserializeObject<ICollection<int>>(v));
 
-            modelBuilder.Entity<Schema>().HasKey(s => s.Type);
+            modelBuilder.Entity<Schema>().HasKey(s => s.ID);
             modelBuilder.Entity<Schema>().Property(s => s.Properties).HasConversion(
-                    v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<Dictionary<string, Property>>(v));
+                    v => System.Text.Json.JsonSerializer.Serialize(v, options),
+                    v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Property>>(v, options));
 
             modelBuilder.Entity<ListConfig>().Property(s => s.Properties).HasConversion(
                     v => JsonConvert.SerializeObject(v),
                     v => JsonConvert.DeserializeObject<Dictionary<string, PropertyConfig>>(v));
-                
+
             base.OnModelCreating(modelBuilder);
         }
 

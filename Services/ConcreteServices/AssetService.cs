@@ -136,7 +136,7 @@ namespace KbstAPI.Services.ConcreteServices
 
         }
 
-        public async Task<GetAssetsResponse> GetAssetsResponse(Guid id, bool includeConfig, bool includeChildren, string? recursive)
+        public async Task<GetAssetsResponse?> GetAssetsResponse(Guid id, bool includeConfig, bool includeChildren, string? recursive)
         {
             var asset = await _assetRepository.GetById(id);
 
@@ -159,8 +159,8 @@ namespace KbstAPI.Services.ConcreteServices
             var response = new GetAssetsResponse();
             response.Entities = entities;
             if (asset.Type == null)
-                return response;
-            var schema = await _assetRepository.GetAssetSchema(asset.Type);
+                return null ;
+            var schema = await _assetRepository.GetAssetSchema(asset.SubType ?? asset.Type);
             response.Schema = schema;
 
             if (includeConfig)

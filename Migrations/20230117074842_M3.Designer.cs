@@ -3,6 +3,7 @@ using System;
 using KbstAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KbstAPI.Migrations
 {
     [DbContext(typeof(KbstContext))]
-    partial class KbstContextModelSnapshot : ModelSnapshot
+    [Migration("20230117074842_M3")]
+    partial class M3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -195,30 +198,6 @@ namespace KbstAPI.Migrations
                     b.ToTable("Configs");
                 });
 
-            modelBuilder.Entity("KbstAPI.Data.Models.Property", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("AdditionalValues")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("HasCallback")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("PropertyType")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Property");
-                });
-
             modelBuilder.Entity("KbstAPI.Data.Models.Report", b =>
                 {
                     b.Property<int>("ConnectionId")
@@ -241,8 +220,10 @@ namespace KbstAPI.Migrations
 
             modelBuilder.Entity("KbstAPI.Data.Models.Schema", b =>
                 {
+                    b.Property<string>("Type")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("PersistencyState")
@@ -258,11 +239,7 @@ namespace KbstAPI.Migrations
                     b.Property<int>("TemplateId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ID");
+                    b.HasKey("Type");
 
                     b.HasIndex("TemplateId");
 

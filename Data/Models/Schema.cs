@@ -9,8 +9,8 @@ namespace KbstAPI.Data.Models
 {
     public class Schema
     {
-        //[JsonIgnore]
-        //public int ID { get; set; }
+        [JsonIgnore]
+        public int ID { get; set; }
 
         /// <summary>
         /// What type this asset is
@@ -29,7 +29,7 @@ namespace KbstAPI.Data.Models
         /// Configuration of how this schema is to be rendered.
         /// Contains grouping of properties as well as placement of everything
         /// </summary>
-        public LayoutConfig? Template { get; set; }
+        public LayoutConfig Template { get; set; }
 
         public int TemplateId { get; set; }
 

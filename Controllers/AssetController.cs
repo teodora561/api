@@ -140,6 +140,8 @@ namespace KbstAPI.Controllers
             {
                 var includeConfig = (include == null) ? false : include.Contains("config");
                 var result = await _assetService.GetAssetsResponse(parentId, includeConfig, includeChildren: true, recursive);
+                if (result == null)
+                    return BadRequest();
                 return Ok(result);
             }
         }
@@ -155,6 +157,8 @@ namespace KbstAPI.Controllers
         public async Task<ActionResult> GetById (Guid id)
         {
             var result = await _assetService.GetAssetsResponse(id, includeConfig:false, includeChildren: false, recursive: "");
+            if (result == null)
+                return BadRequest();
             return Ok(result);
         }
 

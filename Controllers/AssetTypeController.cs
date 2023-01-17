@@ -44,7 +44,6 @@ namespace KbstAPI.Controllers
         /// </remarks>
         [HttpPost]
         [Route("/assets/types")]
-        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult> CreateAssetType([FromBody] AssetType assetType)
         {
             var res = await _assetTypeService.Create(assetType);

@@ -3,6 +3,7 @@ using System;
 using KbstAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KbstAPI.Migrations
 {
     [DbContext(typeof(KbstContext))]
-    partial class KbstContextModelSnapshot : ModelSnapshot
+    [Migration("20230117083154_M8")]
+    partial class M8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -205,6 +208,10 @@ namespace KbstAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("HasCallback")
                         .HasColumnType("INTEGER");
 
@@ -216,7 +223,11 @@ namespace KbstAPI.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Property");
+                    b.ToTable("Properties");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Property");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("KbstAPI.Data.Models.Report", b =>
@@ -306,6 +317,23 @@ namespace KbstAPI.Migrations
                     b.HasIndex("LabelOptionsId");
 
                     b.HasDiscriminator().HasValue("PropertyRef");
+                });
+
+            modelBuilder.Entity("KbstAPI.Data.Models.TextProperty", b =>
+                {
+                    b.HasBaseType("KbstAPI.Data.Models.Property");
+
+                    b.Property<int>("MaxLength")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MinLength")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Regex")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasDiscriminator().HasValue("TextProperty");
                 });
 
             modelBuilder.Entity("KbstAPI.Data.Models.AssetType", b =>

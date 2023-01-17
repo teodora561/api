@@ -234,7 +234,9 @@ namespace KbstAPI.Documentation
                         ["name"] = new OpenApiObject()
                         {
                             ["type"] = new OpenApiString("Text"),
-                            ["hasCallback"] = new OpenApiBoolean(false)
+                            ["hasCallback"] = new OpenApiBoolean(false),
+                            ["minLength"] = new OpenApiInteger(2),
+                            ["maxLength"] = new OpenApiInteger(30)
                         }
                     }
                 };

@@ -1,6 +1,6 @@
 ﻿using KbstAPI.Core.Props;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace KbstAPI.Data.Models
 {
@@ -13,8 +13,18 @@ namespace KbstAPI.Data.Models
 
         //public Label? Editable { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
+        [Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
         public PropertyType PropertyType { get; set; }
 
+        [JsonExtensionData]
+        public IDictionary<string, object> AdditionalValues { get; set; } = new Dictionary<string, object>();
+
+    }
+
+    public class TextProperty : Property
+    {
+        public int MinLength { get; set; }
+        public int MaxLength { get; set; }
+        public string Regex { get; set; } = String.Empty;
     }
 }

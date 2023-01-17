@@ -8,7 +8,7 @@ namespace KbstAPI.Controllers
 {
     [ApiController]
     [Route("schemas")]
-    [ApiExplorerSettings(IgnoreApi = true)]
+    //[ApiExplorerSettings(IgnoreApi = true)]
     public class SchemaController : ControllerBase
     {
         private KbstContext _context;
@@ -66,6 +66,15 @@ namespace KbstAPI.Controllers
             var res = _mapper.Map<List<PropertiesDTO>>(_context.Schemas.ToList());
             await _context.SaveChangesAsync();
             return Ok(res);
+        }
+
+        [HttpPost]
+        [Route("/property")]
+        public async Task<ActionResult> CreateProperty([FromBody] Property property)
+        {
+            _context.Add(property);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
     }
 }
