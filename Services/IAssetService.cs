@@ -15,7 +15,7 @@ namespace KbstAPI.Services
         Task<IEnumerable<AssetNode>> GetAssetNodes();
         Dictionary<string, Property> GetSchema(IDictionary<string, Property> properties);
         Task<ChangesResponse<Asset>> CreateAsset(Asset item);
-        Task<ChangesResponse<Asset>> CreateAssetNode(AssetNode assetNode);
+        Task<ChangeResponseOneEntity<AssetNode>> CreateAssetNode(AssetNode assetNode);
         Task<ActionResult> DeleteMany(List<Guid> ids, bool force);
         Task<ChangesResponse<AssetNode>> DeleteManyNodes(List<Guid> ids);  
         void DeleteAsset(int id);

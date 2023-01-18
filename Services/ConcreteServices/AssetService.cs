@@ -170,10 +170,18 @@ namespace KbstAPI.Services.ConcreteServices
             return (Dictionary<string, Property>)properties;
         }
 
-        public Task<ChangesResponse<Asset>> CreateAssetNode(AssetNode assetNode)
+        public async Task<ChangeResponseOneEntity<AssetNode>> CreateAssetNode(AssetNode assetNode)
         {
             var asset = _mapper.Map<Asset>(assetNode);
-            return this.CreateAsset(asset);
+
+            await _assetRepository.Add(asset);
+            await _assetRepository.Save();
+
+            var createdAssetNode = _mapper.Map<AssetNode>(asset);
+            var changeResponse = new ChangeResponseOneEntity<AssetNode>(Array.Empty<string>(), createdAssetNode);
+
+            return changeResponse;
+
 
         }
 
