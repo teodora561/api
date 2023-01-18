@@ -195,8 +195,6 @@ namespace KbstAPI.Services.ConcreteServices
                 }
             }
 
-            entities.Add(asset);
-
             var response = new GetAssetsResponse();
             response.Entities = entities;
             if (asset.Type == null)
