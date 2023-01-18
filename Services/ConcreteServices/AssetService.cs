@@ -210,7 +210,7 @@ namespace KbstAPI.Services.ConcreteServices
 
             if (includeConfig)
             {
-                response.Config = _mapper.Map<PropertiesDTO>(_assetRepository.GetAssetConfig(asset.Type).Result);
+                response.Config = _mapper.Map<PropertiesDTO>(_assetRepository.GetAssetConfig(asset.SubType).Result);
             }
 
             await _assetRepository.Save();

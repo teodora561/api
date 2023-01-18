@@ -13,6 +13,8 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var connectionString = builder.Configuration.GetConnectionString("Kbst") ?? "Data Source=Kbst.db";
 
 // Add services to the container.
@@ -29,6 +31,18 @@ builder.Services.AddScoped<IAssetRepository, AssetRepository>();
 builder.Services.AddControllers().AddJsonOptions(opt =>
     opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())
     );
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSqlite<KbstContext>(connectionString);
@@ -58,6 +72,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 
