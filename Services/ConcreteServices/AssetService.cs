@@ -4,9 +4,11 @@ using KbstAPI.Core.IRepositories;
 using KbstAPI.Core.Props;
 using KbstAPI.Core.UnitOfWork;
 using KbstAPI.Data.Models;
-
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.EntityFrameworkCore;
-
+using System.Net;
 
 namespace KbstAPI.Services.ConcreteServices
 {
@@ -41,16 +43,55 @@ namespace KbstAPI.Services.ConcreteServices
             await _assetRepository.Save();
         }
 
-        public async Task<ChangesResponse<Asset>> DeleteMany(List<Guid> ids)
+        public async Task<ActionResult> DeleteMany(List<Guid> ids, bool force = false)
         {
-
-            foreach (Guid id in ids)
+            if (force)
             {
-                _assetRepository.Delete(id);
+                foreach (Guid id in ids)
+                {
+                    _assetRepository.Delete(id);
+                }
+            }
+            else
+            {
+                foreach (Guid id in ids)
+                {
+                    var deleted = await _assetRepository.DeleteWithCheck(id);
+                    if (!deleted)
+                    {
+                        await _assetRepository.Save();
+                        var r = new BadRequestObjectResult($"Cannot delete asset with id {id.ToString()}");
+                        return r;
+
+                    }
+                }
             }
             await _assetRepository.Save();
+            var result = new ChangesResponse<Asset>();
+            return new OkObjectResult(result);
+        }
+            
+        public async Task<ChangesResponse<AssetNode>> DeleteManyNodes(List<Guid> ids)
+        {
+            foreach (var id in ids)
+            {
+                var assets = await _assetRepository.GetAssets(type: "1", parentId: id);
+                var asset = await _assetRepository.GetById(id);
 
-            return new ChangesResponse<Asset>();
+                var mapped = _mapper.Map<List<AssetNode>>(assets.ToList());
+                var nodes = new List<AssetNode>(mapped);
+                foreach (var a in assets)
+                {
+                    a.ParentId = asset.ParentId;
+                    _assetRepository.Update(a);
+                }
+                
+                _assetRepository.Delete(id);
+                await _assetRepository.Save();
+            }
+            
+            var result = new ChangesResponse<AssetNode>();
+            return result;
         }
 
         public async Task<GetAssetsResponse> GetAssets(Guid? parentId, string? type, string? include)

@@ -67,7 +67,7 @@ namespace KbstAPI.Repository.Repositories
             return await this.dbSet.FindAsync(id);
         }
 
-        public void Delete(Guid id)
+        public virtual void Delete(Guid id)
         {
             T? entity = dbSet.Find(id);
             if (entity != null)

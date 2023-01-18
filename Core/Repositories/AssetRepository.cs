@@ -72,5 +72,36 @@ namespace KbstAPI.Core.Repositories
             base.Update(asset);
         }
 
+        //public bool Delete(Guid id, bool force)
+        //{
+        //    var assets = context.Assets.Where(a => a.Properties.ContainsKey(a.Name.ToLower()));
+        //    if (!assets.Any() || force)
+        //    {
+        //        this.Delete(id); 
+        //        return true;   
+        //    }
+        //    return false;
+        //}
+
+        public async Task<bool> DeleteWithCheck(Guid id)
+        {
+            var asset = await base.GetById(id);
+            if (asset == null)
+                return false;
+            var assets = context.Assets.AsEnumerable<Asset>();
+            var temp = assets.Where(a => a.Properties.ContainsKey(asset.Name.ToLower()));
+            if (temp.Any())
+                return false;
+
+            base.Delete(id);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        public override void Delete(Guid id)
+        {
+            base.Delete(id);
+        }
+
     }
 }

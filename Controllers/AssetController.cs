@@ -4,6 +4,7 @@ using KbstAPI.Data.Models;
 using KbstAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
@@ -166,10 +167,11 @@ namespace KbstAPI.Controllers
         /// Delete specific assets.
         /// </summary>
         /// <param name="Ids" example="0e952fc2-4d57-42a8-90c9-71f10afba61a, fb6681a4-2778-4717-9312-8f4462aa60fd">Asset ids</param>
+        /// <param name="force"></param>
         /// <returns></returns>
         [HttpDelete]
         [ProducesResponseType(typeof(ChangesResponse<Asset>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> Delete([FromQuery] string Ids)
+        public async Task<ActionResult> Delete([FromQuery] string Ids, bool? force)
         {
             var assetIds = Ids.Split(',').ToList();
             var guids = new List<Guid>();
@@ -179,8 +181,8 @@ namespace KbstAPI.Controllers
             }
             if (assetIds == null)
                 return BadRequest();
-            var result = await _assetService.DeleteMany(guids);
-            return Ok(result);
+            var result = await _assetService.DeleteMany(guids, force ?? false);
+            return result;
         }
 
         #region AssetNodes
@@ -216,7 +218,7 @@ namespace KbstAPI.Controllers
             }
             if (assetIds == null)
                 return BadRequest();
-            var result = await _assetService.DeleteMany(guids);
+            var result = await _assetService.DeleteManyNodes(guids);
             return Ok(result);
         }
 

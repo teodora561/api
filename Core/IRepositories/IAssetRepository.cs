@@ -1,4 +1,5 @@
-﻿using KbstAPI.Data.Models;
+﻿using KbstAPI.Core.DTO;
+using KbstAPI.Data.Models;
 using KbstAPI.Repository.BaseRepositories;
 
 namespace KbstAPI.Core.IRepositories
@@ -13,6 +14,7 @@ namespace KbstAPI.Core.IRepositories
 
         Task<Schema> GetAssetSchema(string type);
         Task<ListConfig> GetAssetConfig(string type);
+        Task<bool> DeleteWithCheck(Guid id);
 
     }
 }
