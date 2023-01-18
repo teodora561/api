@@ -53,6 +53,8 @@ namespace KbstAPI.Data
                     v => System.Text.Json.JsonSerializer.Serialize(v, options),
                     v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v, options));
 
+
+
             modelBuilder.Entity<AssetType>()
                 .HasMany(a => a.SubTypes)
                 .WithOne()
@@ -80,8 +82,8 @@ namespace KbstAPI.Data
                     v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Property>>(v, options));
 
             modelBuilder.Entity<ListConfig>().Property(s => s.Properties).HasConversion(
-                    v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<Dictionary<string, PropertyConfig>>(v));
+                    v => System.Text.Json.JsonSerializer.Serialize(v, options),
+                    v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, PropertyConfig>>(v, options));
 
             base.OnModelCreating(modelBuilder);
         }

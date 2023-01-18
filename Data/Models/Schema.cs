@@ -31,6 +31,7 @@ namespace KbstAPI.Data.Models
         /// </summary>
         public LayoutConfig Template { get; set; }
 
+        [JsonIgnore]
         public int TemplateId { get; set; }
 
         public PersistencyState PersistencyState { get; set; }

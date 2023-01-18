@@ -1,5 +1,5 @@
 ﻿using KbstAPI.Core.Props;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace KbstAPI.Data.Models
 {
@@ -10,6 +10,7 @@ namespace KbstAPI.Data.Models
 
         public string? Type { get; set; }
 
+        [JsonExtensionData]
         public IDictionary<string, PropertyConfig> Properties { get; set; } = new Dictionary<string, PropertyConfig>();
 
     }

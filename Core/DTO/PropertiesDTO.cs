@@ -1,5 +1,5 @@
 ﻿using KbstAPI.Core.Props;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace KbstAPI.Core.DTO
 {

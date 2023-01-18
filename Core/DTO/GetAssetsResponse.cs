@@ -11,7 +11,7 @@ namespace KbstAPI.Core.DTO
 
         public Schema Schema { get; set; } = new Schema();
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        //[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public PropertiesDTO Config { get; set; } 
     }
 }
