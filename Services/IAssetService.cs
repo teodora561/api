@@ -10,7 +10,8 @@ namespace KbstAPI.Services
         Task<Asset> GetItemById(Guid id);
         Task<IEnumerable<Asset>> GetAssets();
         Task<GetAssetsResponse> GetAssets(Guid? parentId, string? type, string? include);
-        Task<GetAssetsResponse> GetAssetsResponse(Guid id, bool includeConfig, bool includeChildren, string? recursive);
+        Task<GetAssetsResponse> GetAssetsResponse(Guid id, bool includeConfig, string? recursive);
+        Task<GetAssetResponse> GetAssetResponse(Guid id);
         Task<IEnumerable<AssetNode>> GetAssetNodes();
         Dictionary<string, Property> GetSchema(IDictionary<string, Property> properties);
         Task<ChangesResponse<Asset>> CreateAsset(Asset item);

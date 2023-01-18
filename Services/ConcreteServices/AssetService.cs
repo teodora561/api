@@ -177,29 +177,27 @@ namespace KbstAPI.Services.ConcreteServices
 
         }
 
-        public async Task<GetAssetsResponse?> GetAssetsResponse(Guid id, bool includeConfig, bool includeChildren, string? recursive)
+        public async Task<GetAssetsResponse?> GetAssetsResponse(Guid id, bool includeConfig, string? recursive)
         {
             var asset = await _assetRepository.GetById(id);
 
             var entities = new List<Asset>();
 
-            if (includeChildren)
+            var schema = await _assetRepository.GetAssetSchemaForRoot(asset.SubType);
+            if (recursive == "true")
             {
-                if (recursive == "true")
-                {
-                    entities = _assetRepository.GetChildrenRecursive(id);
-                }
-                else
-                {
-                    entities = _assetRepository.GetChildren(id);
-                }
+                entities = _assetRepository.GetChildrenRecursive(id);
             }
+            else
+            {
+                entities = _assetRepository.GetChildren(id);
+            }
+
 
             var response = new GetAssetsResponse();
             response.Entities = entities;
             if (asset.Type == null)
-                return null ;
-            var schema = await _assetRepository.GetAssetSchema(asset.SubType ?? asset.Type);
+                return null;
             response.Schema = schema;
 
             if (includeConfig)
@@ -212,6 +210,16 @@ namespace KbstAPI.Services.ConcreteServices
             return response;
         }
 
+        public async Task<GetAssetResponse?> GetAssetResponse(Guid id)
+        {
+            var asset = await _assetRepository.GetById(id);
+            var schema = await _assetRepository.GetAssetSchema(asset.SubType);
+            var response = new GetAssetResponse();
+            response.Entity = asset;
+            response.Schema = schema;
+            return response;
+
+        }
         public async Task<ChangesResponse<AssetNode>> UpdateAssetNode(AssetNode assetNode)
         {
 

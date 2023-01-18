@@ -34,15 +34,26 @@ namespace KbstAPI.Core.Repositories
 
         }
 
-        public async Task<Schema> GetAssetSchema(string type)
+        public async Task<Schema> GetAssetSchemaForRoot(string type)
         {
-            var s = context.Schemas.Where(s => s.Type == type)
+            var s = context.Schemas.Where(s => s.Type == type && s.SubType == null)
                 .Include(s => s.Template)
                     .ThenInclude(s => s.Sections)
                         .ThenInclude(s => s.Content)
                 .FirstOrDefault();
             return s;
         }
+
+        public async Task<Schema> GetAssetSchema(string type)
+        {
+            var s = context.Schemas.Where(s => s.SubType == type)
+                .Include(s => s.Template)
+                    .ThenInclude(s => s.Sections)
+                        .ThenInclude(s => s.Content)
+                .FirstOrDefault();
+            return s;
+        }
+
 
         public List<Asset> GetChildren(Guid id)
         {
