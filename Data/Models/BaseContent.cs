@@ -1,16 +1,20 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace KbstAPI.Data.Models
 {
+    [JsonDerivedType(typeof(Group),typeDiscriminator: "group")]
+    [JsonDerivedType(typeof(PropertyRef), typeDiscriminator: "propertyRef")]
     public class BaseContent
     {
         [JsonIgnore]
         public int ID {get; set;}
-        [JsonConverter(typeof(StringEnumConverter))]
+        [Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
         public ContentType Type { get; set; }
+
+        public ICollection<int> SplitRatio { get; set; }
 
         [ForeignKey("ParentId")]
         [JsonIgnore]
@@ -25,7 +29,6 @@ namespace KbstAPI.Data.Models
     /// <summary>
     /// Acts as a container around other groups and properties
     /// </summary>
-
     public class Group : BaseContent
     {
         public string Name { get; set; } = String.Empty;
@@ -39,6 +42,10 @@ namespace KbstAPI.Data.Models
         /// Depending on the render direction, it will set a gap in that axis
         /// </summary>
         public int Gap { get; set; }
+        
+        public int Spacer { get; set; }
+
+        public string LabelAlignment { get; set; } = String.Empty;
 
         /// <summary>
         /// Recursive list of other content

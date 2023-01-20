@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using KbstAPI.Core.DTO;
+using KbstAPI.Core.IRepositories;
 using KbstAPI.Data;
 using KbstAPI.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace KbstAPI.Controllers
@@ -14,10 +16,12 @@ namespace KbstAPI.Controllers
     {
         private KbstContext _context;
         private readonly IMapper _mapper;
+        private IAssetRepository _assetRepository;
 
-        public SchemaController(KbstContext context, IMapper mapper) { 
+        public SchemaController(KbstContext context, IMapper mapper, IAssetRepository assetRepository) { 
             _context = context;
             _mapper = mapper;
+            _assetRepository = assetRepository;
         }
 
         /// <summary>
@@ -76,12 +80,13 @@ namespace KbstAPI.Controllers
             }
             else if(!subtype.IsNullOrEmpty())
             {
-                var schemas = _context.Schemas.Where(s => s.SubType == subtype);
-                if(schemas.Any())
-                    return Ok(schemas.First());
+                var schema = await _assetRepository.GetAssetSchema(subtype);
+                if(schema != null)
+                    return Ok(schema);
+
             }   
 
-            var s = _context.Schemas.Where(s => s.Type == type).FirstOrDefault();
+            var s = await _assetRepository.GetAssetSchemaByType(type);
             return Ok(s);
              
         }

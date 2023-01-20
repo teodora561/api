@@ -3,6 +3,7 @@ using System;
 using KbstAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KbstAPI.Migrations
 {
     [DbContext(typeof(KbstContext))]
-    partial class KbstContextModelSnapshot : ModelSnapshot
+    [Migration("20230120094719_M10")]
+    partial class M10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -277,16 +280,16 @@ namespace KbstAPI.Migrations
                 {
                     b.HasBaseType("KbstAPI.Data.Models.BaseContent");
 
+                    b.Property<string>("Alignment")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Direction")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Gap")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("LabelAlignment")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("LabelId")
                         .HasColumnType("INTEGER");

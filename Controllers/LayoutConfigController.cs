@@ -68,7 +68,7 @@ namespace KbstAPI.Controllers
         [Route("/group/{id}")]
         public  async Task<ActionResult> GetGroup(int id)
         {
-            var label = _context.Groups.Where(g => g.ID == id).Include(g => g.Content).FirstOrDefault();
+            var label = _context.Groups.Where(g => g.ID == id).Include(g => g.Content).Include(g => g.Label).FirstOrDefault();
             await _context.SaveChangesAsync();
             return Ok(label);
         }

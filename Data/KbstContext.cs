@@ -70,8 +70,12 @@ namespace KbstAPI.Data
                 .WithOne()
                 .HasForeignKey(c => c.ParentId);
 
-
             modelBuilder.Entity<LayoutSection>().Property(s => s.ColumnRatio).HasConversion(
+
+                v => JsonConvert.SerializeObject(v),
+                v => JsonConvert.DeserializeObject<ICollection<int>>(v));
+
+            modelBuilder.Entity<BaseContent>().Property(s => s.SplitRatio).HasConversion(
 
                 v => JsonConvert.SerializeObject(v),
                 v => JsonConvert.DeserializeObject<ICollection<int>>(v));

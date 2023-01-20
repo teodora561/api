@@ -13,6 +13,9 @@ namespace KbstAPI.Core.IRepositories
         List<Asset> GetChildren(Guid id);
 
         Task<Schema> GetAssetSchema(string type);
+
+        public Task<Schema> GetAssetSchemaByType(string type);
+
         Task<Schema> GetAssetSchemaForRoot(string type);
         Task<ListConfig> GetAssetConfig(string type);
         Task<bool> DeleteWithCheck(Guid id);

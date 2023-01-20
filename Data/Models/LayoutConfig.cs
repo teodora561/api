@@ -39,7 +39,7 @@ namespace KbstAPI.Data.Models
         /// <summary>
         /// List of everything shown. Can be properties or groups
         /// </summary>
-        public List<BaseContent> Content { get; set; }
+        public ICollection<BaseContent> Content { get; set; }
 
         [ForeignKey("LayoutConfigId")]
         [JsonIgnore]

@@ -1,8 +1,4 @@
-﻿using KbstAPI.Core.Props;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Newtonsoft.Json;
 
 
 namespace KbstAPI.Data.Models

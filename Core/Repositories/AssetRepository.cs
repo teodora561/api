@@ -36,22 +36,119 @@ namespace KbstAPI.Core.Repositories
 
         public async Task<Schema> GetAssetSchemaForRoot(string type)
         {
-            var s = context.Schemas.Where(s => s.Type == type && s.SubType == null)
+            var schema = context.Schemas.Where(s => s.Type == type && s.SubType == null)
                 .Include(s => s.Template)
                     .ThenInclude(s => s.Sections)
-                        .ThenInclude(s => s.Content)
                 .FirstOrDefault();
-            return s;
+            if(schema != null)
+            foreach (var section in schema.Template.Sections.ToList())
+            {
+                var sectionContent = new List<BaseContent>();
+                var groups = context.Groups.Where(c => c.LayoutSectionId == section.ID && c.ParentId == null).Include(g => g.Label).ToList();
+                sectionContent.AddRange(groups);
+                var refs = context.PropertyRefs.Where(c => c.LayoutSectionId == section.ID && c.ParentId == null).Include(p => p.LabelOptions).ToList();
+                sectionContent.AddRange(refs);
+                section.Content = sectionContent;
+
+                var tempContent = sectionContent.ToList();
+
+                foreach (var contentElement in tempContent)
+                {
+                    if (contentElement.Type == ContentType.Group)
+                    {
+                        (contentElement as Group).Content = GetGroupContent(contentElement.ID);
+                    }
+                }
+
+                section.Content = tempContent;
+            }
+
+
+            return schema;
         }
 
         public async Task<Schema> GetAssetSchema(string type)
         {
-            var s = context.Schemas.Where(s => s.SubType == type)
+            var schema = context.Schemas.Where(s => s.SubType == type)
                 .Include(s => s.Template)
                     .ThenInclude(s => s.Sections)
-                        .ThenInclude(s => s.Content)
                 .FirstOrDefault();
-            return s;
+            if(schema != null)
+            foreach (var section in schema.Template.Sections.ToList())
+            {
+                var sectionContent = new List<BaseContent>();
+                var groups = context.Groups.Where(c => c.LayoutSectionId == section.ID && c.ParentId == null).Include(g => g.Label).ToList();
+                sectionContent.AddRange(groups);
+                var refs = context.PropertyRefs.Where(c => c.LayoutSectionId == section.ID && c.ParentId == null).Include(p => p.LabelOptions).ToList();
+                sectionContent.AddRange(refs);
+                section.Content = sectionContent;
+
+                var tempContent = sectionContent.ToList();
+
+                foreach (var contentElement in tempContent)
+                {
+                    if (contentElement.Type == ContentType.Group)
+                    {
+                        (contentElement as Group).Content = GetGroupContent(contentElement.ID);
+                    }
+                }
+
+                section.Content = tempContent;
+            }
+
+
+            return schema;
+        }
+
+        public async Task<Schema> GetAssetSchemaByType(string type)
+        {
+            var schema = context.Schemas.Where(s => s.Type == type)
+                .Include(s => s.Template)
+                    .ThenInclude(s => s.Sections)
+                .FirstOrDefault();
+            if(schema != null)
+            foreach (var section in schema.Template.Sections.ToList())
+            {
+                var sectionContent = new List<BaseContent>();
+                var groups = context.Groups.Where(c => c.LayoutSectionId == section.ID && c.ParentId == null).Include(g => g.Label).ToList();
+                sectionContent.AddRange(groups);
+                var refs = context.PropertyRefs.Where(c => c.LayoutSectionId == section.ID && c.ParentId == null).Include(p => p.LabelOptions).ToList();
+                sectionContent.AddRange(refs);
+                section.Content = sectionContent;
+
+                var tempContent = sectionContent.ToList();
+
+                foreach (var contentElement in tempContent)
+                {
+                    if (contentElement.Type == ContentType.Group)
+                    {
+                        (contentElement as Group).Content = GetGroupContent(contentElement.ID);
+                    }
+                }
+
+                section.Content = tempContent;
+            }
+
+
+            return schema;
+        }
+
+        private ICollection<BaseContent> GetGroupContent(int groupId)
+        {
+            var content = new List<BaseContent>();
+            var groups = context.Groups.Where(c => c.ParentId == groupId).Include(g => g.Label).ToList();
+            var refs = context.PropertyRefs.Where(r => r.ParentId == groupId).Include(r => r.LabelOptions).ToList();
+            content.AddRange(groups);
+            content.AddRange(refs);
+
+            foreach (var g in groups)
+            {
+
+                g.Content = GetGroupContent(g.ID);
+            }
+
+            return content;
+
         }
 
 
